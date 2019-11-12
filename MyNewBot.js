@@ -1,15 +1,37 @@
 const hlt = require("./hlt");
 const {
-  Direction
+  Direction,
+  Position
 } = require("./hlt/positionals");
 const logging = require("./hlt/logging");
 
 const game = new hlt.Game();
+
+// Helper Functions
+const getMostHalitePosition = (map) => {
+  var maxPosition = new Position(0, 0);
+  var max = 0;
+
+  for (var i = 0; i < map.width; i++) {
+    for (var j = 0; j < map.height; j++) {
+      const pos = new Position(i, j);
+      const cell = map.get(pos);
+      if (cell.haliteAmount > max) {
+        max = cell.haliteAmount;
+        maxPosition = pos;
+      }
+    }
+  }
+  return maxPosition;
+};
+
+// End Helper Functions
+
 game.initialize().then(async () => {
   // At this point "game" variable is populated with initial map data.
   // This is a good place to do computationally expensive start-up pre-processing.
   // As soon as you call "ready" function below, the 2 second per turn timer will start.
-  await game.ready("MyTestBot");
+  await game.ready("My New Bot");
 
   logging.info(`My Player ID is ${game.myId}.`);
 
@@ -30,13 +52,9 @@ game.initialize().then(async () => {
         const destination = me.shipyard.position;
         const safeMove = gameMap.naiveNavigate(ship, destination);
         commandQueue.push(ship.move(safeMove));
-      } else if (gameMap.get(ship.position).haliteAmount < hlt.constants.MAX_HALITE / 10) {
-        // else if the current cells haliate is less than 1/10 of the max malite of a ship
-        // (default 1000) then pick a random direction and get off the cell.
-        const direction = Direction.getAllCardinals()[
-          Math.floor(4 * Math.random())
-        ];
-        const destination = ship.position.directionalOffset(direction);
+      } else {
+        // move towards cell with the highest amount of halite (greedy algorithm)
+        const destination = getMostHalitePosition(gameMap);
         const safeMove = gameMap.naiveNavigate(ship, destination);
         commandQueue.push(ship.move(safeMove));
       }
