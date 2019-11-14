@@ -16,7 +16,7 @@ const getMostHalitePosition = (map) => {
     for (var j = 0; j < map.height; j++) {
       const pos = new Position(i, j);
       const cell = map.get(pos);
-      if (cell.haliteAmount > max) {
+      if (cell.haliteAmount > max && !cell.isOccupied) {
         max = cell.haliteAmount;
         maxPosition = pos;
       }
@@ -52,6 +52,8 @@ game.initialize().then(async () => {
         const destination = me.shipyard.position;
         const safeMove = gameMap.naiveNavigate(ship, destination);
         commandQueue.push(ship.move(safeMove));
+      } else if (gameMap.get(ship.position).haliteAmount > hlt.constants.MAX_HALITE / 10) {
+        commandQueue.push(ship.stayStill());
       } else {
         // move towards cell with the highest amount of halite (greedy algorithm)
         const destination = getMostHalitePosition(gameMap);

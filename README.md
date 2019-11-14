@@ -1,29 +1,42 @@
-# Starter Kit
+# Niffler
 
-## Halite III starter kit components
-* MyBot.{extension}, a starter bot outline
-* /hlt directory, which contains modifiable helper functions for your bot
-* A Halite executable that enables local playtesting of your bot
-* The scripts run_game.bat (Windows) and run_game.sh (MacOS, Linux)
+## Definition
 
-## Testing your bot locally
-* Run run_game.bat (Windows) and run_game.sh (MacOS, Linux) to run a game of Halite III. By default, these scripts run a game of your MyBot.py bot vs. itself.  You can modify the board size, map seed, and the opponents of test games using the CLI.
+A Niffler is a creature with a long snout and a coat of black, fluffy fur. They're attracted to shiny things, which made them wonderful for locating treasure, but this also means they could wreak havoc if kept (or set loose) indoors.
 
-## CLI
-The Halite executable comes with a command line interface (CLI). Run `$ ./halite --help` to see a full listing of available flags.
+## Purpose
 
-## Submitting your bot
-* Zip your MyBot.{extension} file and /hlt directory together.
-* Submit your zipped file here: https://halite.io/play-programming-challenge
+Niffler is a [Halite III bot](https://2018.halite.io/learn-programming-challenge/game-overview) developed by Keith LaForce as a part of the Levvel Twin Challenge, 2019. The code is developed using the MIT license. Please use at your peril. Remember, Nifflers can wreak havoc.
 
-## Compiling your bot on our game servers
-* Your bot has `10 minutes` to install dependencies and compile on the game server.
-* You can run custom commands to set up your bot by including an `install.sh` file alongside `MyBot.{ext}`. This file will be executed and should be a Bash shell script. You must include the shebang line at the top: `#!/bin/bash`.
-  * For Python, you may install packages using pip, but you may not install to the global package directory. Instead, install packages as follows: `python3.6 -m pip install --system --target . numpy`
-* Some languages don't use the `MyBot.{ext}` convention. Exceptions include:
-  * Rust: a Cargo.toml in the root will be detected as Rust. Your bot will compile with `cargo rustc`.
-  * Swift: a Package.swift in the root will be detected as Swift. Your bot will compile with `swift build`.
-  * Haskell: You may upload a MyBot.hs, or you may upload a `stack.yaml`, in which case your bot will compile with `stack build`.
-  * Elixir: Upload a mix.exs. Your bot will compile with `mix deps.get` followed by `mix escript.build`.
-  * Clojure: Upload a project.clj. Your bot will compile with `lein uberjar`.
-  * .NET: Upload a MyBot.csproj or MyBot.fsproj. Your bot will compile with `dotnet restore` followed with `dotnet build`.
+## High Level Algorithm
+
+Niffler combines a few concepts together into a metaheuristic based approach to solving the problem of resource collection in Halite III. The algorithm is composed into a couple of steps
+
+1. Build a BSP tree subdividing the Halite III map into `Blocks` of approximately `HALITE_BLOCK_MAX` halite.
+2. Once subdivided, a `ShipOrchestrator` will direct a ship to a `Block` utilizing a greedy algorithm based on the `fitness()` of the `Block`. Only `MAX_SHIPS_PER_BLOCK` can be directed to a single `Block`.
+3. Once a `Ship` reaches a `Block` it will collect halite until a certain `IDEAL_CAPACITY`.
+4. After collecting `IDEAL_CAPACITY` the `Ship` will return to the `Shipyard` or `Dropoff`.
+
+## Primary Domain Objects
+
+```javascript
+class Ship
+{
+    Position position
+}
+```
+
+each block will have following attributes
+list of mapcells
+total halite
+manhattan distance from spawn point OR dropoff (based on the center of block)
+queue of ships in the block
+queue of ships headed to the block
+mapcell of the center of the block
+
+algorithm
+
+1. Build BSP Tree (every 100 turns?)
+2. if halite > 1000 && we are not 75% of the way through the game then spawn ship
+3. push ship into queue of block with highest fitness function
+4. navigate ship towards center of block
