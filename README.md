@@ -12,7 +12,7 @@ Niffler is a [Halite III bot](https://2018.halite.io/learn-programming-challenge
 
 Niffler combines a few concepts together into a metaheuristic based approach to solving the problem of resource collection in Halite III. The algorithm is composed into a couple of steps
 
-1. Build a BSP tree [`BlockTree`] subdividing the Halite III map into `BlockLeafs` of approximately `HALITE_BLOCK_MAX` halite.
+1. Build a BSP tree [`BlockTree`] subdividing the Halite III map into `Blocks` of approximately `HALITE_BLOCK_MAX` halite.
 2. Once subdivided, a `ShipOrchestrator` will direct a ship to a `Block` utilizing a greedy algorithm based on the `fitness()` of the `Block`. Only `MAX_SHIPS_PER_BLOCK` can be directed to a single `Block`.
 3. Once a `Ship` reaches a `Block` it will collect halite until a certain `IDEAL_CAPACITY`.
 4. After collecting `IDEAL_CAPACITY` the `Ship` will return to the `Shipyard` or `Dropoff`.
@@ -44,21 +44,24 @@ class MapCell
     Location position
     int halite
     Ship ship
-    bool hasStructure //defines if shipyard or dropoff
+    bool hasStructure
 }
 
 class BlockTree
 {
     Block root
-    Block traverseTree //function
+    Block traverseTree
 }
 
-class BLockLeaf
+class Block
 {
-    Block leftLeaf
-    Block rightLeaf
+    Block left
+    Block right
     list MapCell cells
-    int x, y, width, height //position and size of the block
+    int x
+    int y
+    int width
+    int height
     int totalHalite
     int distanceFromClosestDropoff
     list shipsInBlock
@@ -68,7 +71,7 @@ class BLockLeaf
 class ShipOrchestrator
 {
     BlockTree tree
-    Move determineNextMoveForShip //function
+    Move determineNextMoveForShip
 }
 ```
 

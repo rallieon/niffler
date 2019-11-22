@@ -1,12 +1,12 @@
-const Node = require('./node');
+const Block = require('./block');
 
-class BinaryTree {
+class BlockTree {
     constructor() {
         this.root = null;
     }
 
-    insert(data) {
-        var newNode = new Node(data);
+    insert(cells, width, height) {
+        let newNode = new Block(cells, width, height);
 
         if (this.root === null) this.root = newNode;
         else this.insertNode(this.root, newNode);
@@ -24,5 +24,5 @@ class BinaryTree {
 }
 
 module.exports = {
-    BinaryTree
+    BlockTree
 };

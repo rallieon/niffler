@@ -1,4 +1,4 @@
-const BinaryTree = require('./binarytree');
+const BinaryTree = require('./blocktree');
 
 module.exports = {
     BinaryTree
