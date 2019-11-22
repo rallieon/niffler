@@ -4,7 +4,9 @@ let logFile;
 
 module.exports = {
     setup(filename) {
-        logFile = fs.createWriteStream(filename, { flags: 'w' });
+        logFile = fs.createWriteStream(filename, {
+            flags: 'w'
+        });
     },
 
     format(args) {

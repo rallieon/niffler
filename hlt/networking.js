@@ -2,7 +2,10 @@ const readline = require('readline');
 
 const constants = require('./constants');
 const logging = require('./logging');
-const { GameMap, Player } = require('./gameMap');
+const {
+    GameMap,
+    Player
+} = require('./gameMap');
 
 class Game {
     constructor() {
@@ -15,7 +18,7 @@ class Game {
         });
         const buffer = [];
         let currentResolve;
-        const makePromise = function() {
+        const makePromise = function () {
             return new Promise((resolve) => {
                 currentResolve = resolve;
             });
@@ -26,7 +29,7 @@ class Game {
             currentResolve();
             currentPromise = makePromise();
         });
-        const getLine = function() {
+        const getLine = function () {
             return new Promise(async (resolve) => {
                 while (buffer.length === 0) {
                     await currentPromise;
@@ -46,9 +49,9 @@ class Game {
         const rawConstants = await this._getLine();
         constants.loadConstants(JSON.parse(rawConstants));
 
-        const [ numPlayers, myId ] = (await this._getLine())
-              .split(/\s+/)
-              .map(tok => parseInt(tok, 10));
+        const [numPlayers, myId] = (await this._getLine())
+        .split(/\s+/)
+            .map(tok => parseInt(tok, 10));
         this.myId = myId;
 
         logging.setup(`bot-${myId}.log`);
@@ -63,7 +66,7 @@ class Game {
 
     /** Indicate that your bot is ready to play. */
     async ready(name) {
-        await sendCommands([ name ]);
+        await sendCommands([name]);
     }
 
     /**
@@ -74,9 +77,9 @@ class Game {
         logging.info(`================ TURN ${this.turnNumber.toString().padStart(3, '0')} ================`);
 
         for (let i = 0; i < this.players.size; i++) {
-            const [ player, numShips, numDropoffs, halite ] = (await this._getLine())
-                  .split(/\s+/)
-                  .map(x => parseInt(x, 10));
+            const [player, numShips, numDropoffs, halite] = (await this._getLine())
+            .split(/\s+/)
+                .map(x => parseInt(x, 10));
             await this.players.get(player)._update(numShips, numDropoffs, halite, this._getLine);
         }
 
@@ -112,7 +115,7 @@ class Game {
  */
 function sendCommands(commands) {
     return new Promise((resolve) => {
-        process.stdout.write(commands.join(' ') + '\n', function() {
+        process.stdout.write(commands.join(' ') + '\n', function () {
             resolve();
         });
     });

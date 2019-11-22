@@ -1,10 +1,17 @@
 const constants = require('./constants');
-const { Ship, Dropoff, Shipyard } = require('./entity');
-const { Direction, Position } = require('./positionals');
+const {
+    Ship,
+    Dropoff,
+    Shipyard
+} = require('./entity');
+const {
+    Direction,
+    Position
+} = require('./positionals');
 
 /** Player object, containing all entities/metadata for the player. */
 class Player {
-    constructor(playerId, shipyard, halite=0) {
+    constructor(playerId, shipyard, halite = 0) {
         this.id = playerId;
         this.shipyard = shipyard;
         this.haliteAmount = halite;
@@ -51,11 +58,11 @@ class Player {
      */
     static async _generate(getLine) {
         const line = await getLine();
-        const [ playerId, shipyardX, shipyardY ] = line
-              .split(/\s+/)
-              .map(x => parseInt(x, 10));
+        const [playerId, shipyardX, shipyardY] = line
+            .split(/\s+/)
+            .map(x => parseInt(x, 10));
         return new Player(playerId,
-                          new Shipyard(playerId, -1, new Position(shipyardX, shipyardY)));
+            new Shipyard(playerId, -1, new Position(shipyardX, shipyardY)));
     }
 
     /**
@@ -67,12 +74,12 @@ class Player {
         this.haliteAmount = halite;
         this._ships = new Map();
         for (let i = 0; i < numShips; i++) {
-            const [ shipId, ship ] = await Ship._generate(this.id, getLine);
+            const [shipId, ship] = await Ship._generate(this.id, getLine);
             this._ships.set(shipId, ship);
         }
         this._dropoffs = new Map();
         for (let i = 0; i < numDropoffs; i++) {
-            const [ dropoffId, dropoff ] = await Dropoff._generate(this.id, getLine);
+            const [dropoffId, dropoff] = await Dropoff._generate(this.id, getLine);
             this._dropoffs.set(dropoffId, dropoff);
         }
     }
@@ -155,17 +162,16 @@ class GameMap {
      * Getter for position object or entity objects within the game map
      * @param location the position or entity to access in this map
      * @returns the contents housing that cell or entity
-    */
+     */
     get(...args) {
         if (args.length === 2) {
             return this._cells[args[1]][args[0]];
         }
-        let [ location ] = args;
+        let [location] = args;
         if (location instanceof Position) {
             location = this.normalize(location);
             return this._cells[location.y][location.x];
-        }
-        else if (location.position) {
+        } else if (location.position) {
             return this.get(location.position);
         }
         return null;
@@ -177,7 +183,7 @@ class GameMap {
      * @param source The source from where to calculate
      * @param target The target to where calculate
      * @returns The distance between these items
-    */
+     */
     calculateDistance(source, target) {
         source = this.normalize(source);
         target = this.normalize(target);
@@ -193,7 +199,7 @@ class GameMap {
      * wraparound.
      * @param {Position} position A position object.
      * @returns A normalized position object fitting within the bounds of the map
-    */
+     */
     normalize(position) {
         let x = ((position.x % this.width) + this.width) % this.width;
         let y = ((position.y % this.height) + this.height) % this.height;
@@ -214,9 +220,9 @@ class GameMap {
     static _getTargetDirection(source, target) {
         return [
             target.y > source.y ? Direction.South :
-                (target.y < source.y ? Direction.North : null),
+            (target.y < source.y ? Direction.North : null),
             target.x > source.x ? Direction.East :
-                (target.x < source.x ? Direction.West : null),
+            (target.x < source.x ? Direction.West : null),
         ];
     }
 
@@ -242,7 +248,7 @@ class GameMap {
 
         const possibleMoves = [];
         const distance = destination.sub(source).abs();
-        const [ yDir, xDir ] = GameMap._getTargetDirection(source, destination);
+        const [yDir, xDir] = GameMap._getTargetDirection(source, destination);
 
         if (distance.x !== 0) {
             possibleMoves.push(distance.x < (this.width / 2) ? xDir : xDir.invert());
@@ -276,9 +282,9 @@ class GameMap {
     }
 
     static async _generate(getLine) {
-        const [ mapWidth, mapHeight ] = (await getLine())
-              .split(/\s+/)
-              .map(x => parseInt(x, 10));
+        const [mapWidth, mapHeight] = (await getLine())
+        .split(/\s+/)
+            .map(x => parseInt(x, 10));
         const gameMap = [];
         for (let i = 0; i < mapHeight; i++) {
             const row = [];
@@ -312,9 +318,9 @@ class GameMap {
         const numChangedCells = parseInt(await getLine(), 10);
         for (let i = 0; i < numChangedCells; i++) {
             const line = (await getLine());
-            const [ cellX, cellY, cellEnergy ] = line
-                  .split(/\s+/)
-                  .map(x => parseInt(x, 10));
+            const [cellX, cellY, cellEnergy] = line
+                .split(/\s+/)
+                .map(x => parseInt(x, 10));
             this.get(cellX, cellY).haliteAmount = cellEnergy;
         }
     }

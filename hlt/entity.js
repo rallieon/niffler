@@ -1,4 +1,7 @@
-const { Direction, Position } = require('./positionals');
+const {
+    Direction,
+    Position
+} = require('./positionals');
 
 const commands = require('./commands');
 const constants = require('./constants');
@@ -26,10 +29,10 @@ class Dropoff extends Entity {
      * @returns {Dropoff}
      */
     static async _generate(playerId, getLine) {
-        const [ id, xPos, yPos ] = (await getLine())
-              .split(/\s+/)
-              .map(x => parseInt(x, 10));
-        return [ id, new Dropoff(playerId, id, new Position(xPos, yPos)) ];
+        const [id, xPos, yPos] = (await getLine())
+        .split(/\s+/)
+            .map(x => parseInt(x, 10));
+        return [id, new Dropoff(playerId, id, new Position(xPos, yPos))];
     }
 }
 
@@ -87,10 +90,10 @@ class Ship extends Entity {
      * @private
      */
     static async _generate(playerId, getLine) {
-        const [ shipId, xPos, yPos, halite ] = (await getLine())
-              .split(/\s+/)
-              .map(x => parseInt(x, 10));
-        return [ shipId, new Ship(playerId, shipId, new Position(xPos, yPos), halite) ];
+        const [shipId, xPos, yPos, halite] = (await getLine())
+        .split(/\s+/)
+            .map(x => parseInt(x, 10));
+        return [shipId, new Ship(playerId, shipId, new Position(xPos, yPos), halite)];
     }
 
     toString() {

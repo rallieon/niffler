@@ -6,7 +6,7 @@ module.exports = {
     /**
      * The maximum number of map cells to consider in navigation.
      */
-    MAX_BFS_STEPS: 1024,  // search an entire 32x32 region
+    MAX_BFS_STEPS: 1024, // search an entire 32x32 region
 
     /**
      * Load constants from JSON given by the game engine.
@@ -24,7 +24,7 @@ module.exports = {
         /**
          * The maximum number of turns a game can last. This reflects
          * the fact that smaller maps play for fewer turns.
-        */
+         */
         this.MAX_TURNS = constants['MAX_TURNS'];
 
         /** 1/EXTRACT_RATIO halite (truncated) is collected from a square per turn. */
@@ -39,13 +39,13 @@ module.exports = {
         /**
          * A ship is inspired if at least INSPIRATION_SHIP_COUNT
          * opponent ships are within this Manhattan distance.
-        */
+         */
         this.INSPIRATION_RADIUS = constants['INSPIRATION_RADIUS'];
 
         /**
          * A ship is inspired if at least this many opponent ships are
          * within INSPIRATION_RADIUS distance.
-        */
+         */
         this.INSPIRATION_SHIP_COUNT = constants['INSPIRATION_SHIP_COUNT'];
 
         /** An inspired ship mines 1/X halite from a cell per turn instead. */
