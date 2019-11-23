@@ -10,6 +10,7 @@
         "skipFiles": [
             "<node_internals>/**"
         ],
-        "program": "${workspaceFolder}\\NifflerBot.js"
+        "program": "${workspaceFolder}\\NifflerBot.js",
+        "args": ["5000", "1", "500", "100"]
     }]
 }

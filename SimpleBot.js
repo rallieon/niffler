@@ -4,6 +4,9 @@ const niffler = require("./niffler");
 
 const game = new hlt.Game();
 
+niffler.setParameters(...args);
+niffler.setLogger(logging);
+
 game.initialize().then(async () => {
     await game.ready("KeithBotSIMPLE");
 
