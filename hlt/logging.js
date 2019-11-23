@@ -1,16 +1,16 @@
-const fs = require('fs');
+const fs = require("fs");
 
 let logFile;
 
 module.exports = {
     setup(filename) {
         logFile = fs.createWriteStream(filename, {
-            flags: 'w'
+            flags: "w"
         });
     },
 
     format(args) {
-        return args.map(x => typeof x !== 'string' ? x.toString() : x).join(' ');
+        return args.map(x => typeof x !== "string" ? x.toString() : x).join(" ");
     },
 
     debug(...args) {

@@ -1,10 +1,10 @@
 const {
     Direction,
     Position
-} = require('./positionals');
+} = require("./positionals");
 
-const commands = require('./commands');
-const constants = require('./constants');
+const commands = require("./commands");
+const constants = require("./constants");
 
 /** Base entity class for Ships, Dropoffs, and Shipyards. */
 class Entity {

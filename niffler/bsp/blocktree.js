@@ -1,4 +1,4 @@
-const Block = require('./block');
+const Block = require("./block");
 
 class BlockTree {
     constructor() {
@@ -13,7 +13,7 @@ class BlockTree {
     }
 
     insertNode(node, newNode) {
-        if (newNode.data < node.data) {
+        if (newNode.width < node.width) {
             if (node.left === null) node.left = newNode;
             else this.insertNode(node.left, newNode);
         } else {
@@ -21,6 +21,15 @@ class BlockTree {
             else this.insertNode(node.right, newNode);
         }
     }
+
+    traverse(node) {
+        if (node !== null) {
+            this.traverse(node.left);
+            console.log(node.width);
+            this.traverse(node.right);
+        }
+    }
+
 }
 
 module.exports = {

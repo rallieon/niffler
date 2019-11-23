@@ -1,13 +1,13 @@
-const constants = require('./constants');
+const constants = require("./constants");
 const {
     Ship,
     Dropoff,
     Shipyard
-} = require('./entity');
+} = require("./entity");
 const {
     Direction,
     Position
-} = require('./positionals');
+} = require("./positionals");
 
 /** Player object, containing all entities/metadata for the player. */
 class Player {
@@ -24,7 +24,7 @@ class Player {
         return this._ships.get(shipId);
     }
 
-    /** Get a list of the player's ships. */
+    /** Get a list of the player"s ships. */
     getShips() {
         const result = [];
         for (const ship of this._ships.values()) {
@@ -38,7 +38,7 @@ class Player {
         return this._dropoffs.get(dropoffId);
     }
 
-    /** Get a list of the player's dropoffs. */
+    /** Get a list of the player"s dropoffs. */
     getDropoffs() {
         const result = [];
         for (const dropoff of this._dropoffs.values()) {

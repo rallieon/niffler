@@ -10,7 +10,9 @@ Niffler is a [Halite III bot](https://2018.halite.io/learn-programming-challenge
 
 ## High Level Algorithm
 
-Niffler combines a few concepts together into a metaheuristic based approach to solving the problem of resource collection in Halite III. The algorithm is composed into a couple of steps
+Niffler combines a few concepts together into a metaheuristic based approach to solving the problem of resource collection in Halite III. Niffler is implemented using the Strategy Design pattern via `BotStrategyManager`. The first iteration of Niffler contains two strategies: `SimpleBotStrategy` and `BinarySpaceBotStrategy`. The `SimpleBotStrategy` will choose a direction at random to collect halite and based on simple rules will direct the `Ship` back to the `Shipyard`.
+
+The `BinarySpaceStrategy` is the primary strategy used for Niffler. The algorithm is composed into a couple of steps
 
 1. Build a BSP tree [`BlockTree`] subdividing the Halite III map into `Blocks` of approximately `HALITE_BLOCK_MAX` halite.
 2. Once subdivided, a `ShipOrchestrator` will direct a ship to a `Block` utilizing a greedy algorithm based on the `fitness()` of the `Block`. Only `MAX_SHIPS_PER_BLOCK` can be directed to a single `Block`.

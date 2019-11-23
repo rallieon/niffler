@@ -1,11 +1,11 @@
-const readline = require('readline');
+const readline = require("readline");
 
-const constants = require('./constants');
-const logging = require('./logging');
+const constants = require("./constants");
+const logging = require("./logging");
 const {
     GameMap,
     Player
-} = require('./gameMap');
+} = require("./gameMap");
 
 class Game {
     constructor() {
@@ -24,7 +24,7 @@ class Game {
             });
         };
         let currentPromise = makePromise();
-        rl.on('line', (line) => {
+        rl.on("line", (line) => {
             buffer.push(line);
             currentResolve();
             currentPromise = makePromise();
@@ -70,11 +70,11 @@ class Game {
     }
 
     /**
-     * Updates the game object's state.
+     * Updates the game object"s state.
      */
     async updateFrame() {
         this.turnNumber = parseInt(await this._getLine(), 10);
-        logging.info(`================ TURN ${this.turnNumber.toString().padStart(3, '0')} ================`);
+        logging.info(`================ TURN ${this.turnNumber.toString().padStart(3, "0")} ================`);
 
         for (let i = 0; i < this.players.size; i++) {
             const [player, numShips, numDropoffs, halite] = (await this._getLine())
@@ -115,7 +115,7 @@ class Game {
  */
 function sendCommands(commands) {
     return new Promise((resolve) => {
-        process.stdout.write(commands.join(' ') + '\n', function () {
+        process.stdout.write(commands.join(" ") + "\n", function () {
             resolve();
         });
     });

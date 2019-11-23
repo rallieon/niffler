@@ -1,5 +1,1 @@
-const BinaryTree = require('./blocktree');
-
-module.exports = {
-    BinaryTree
-};
+module.exports = require("./botStrategyManager");
