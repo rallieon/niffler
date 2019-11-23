@@ -5,7 +5,7 @@ const niffler = require("./niffler");
 const game = new hlt.Game();
 
 game.initialize().then(async () => {
-    await game.ready("My New Bot");
+    await game.ready("KeithBotBINARY_SPACE");
 
     logging.info(`My Player ID is ${game.myId}.`);
 
@@ -13,8 +13,8 @@ game.initialize().then(async () => {
         await game.updateFrame();
         const commandQueue = [];
 
-        for (const move of niffler.getNextMoves("SIMPLE", game)) {
-            commandQueue.push(move)
+        for (const move of niffler.getNextMoves("BINARY_SPACE", game)) {
+            commandQueue.push(move);
         }
 
         await game.endTurn(commandQueue);
