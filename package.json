@@ -1,0 +1,23 @@
+{
+  "name": "niffler",
+  "version": "1.0.0",
+  "description": "A Niffler is a creature with a long snout and a coat of black, fluffy fur. They're attracted to shiny things, which made them wonderful for locating treasure, but this also means they could wreak havoc if kept (or set loose) indoors.",
+  "main": "NifflerBot.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^6.2.2"
+  },
+  "scripts": {
+    "test": "mocha niffler/**"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klaforce/niffler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/klaforce/niffler/issues"
+  },
+  "homepage": "https://github.com/klaforce/niffler#readme"
+}

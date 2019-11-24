@@ -1,5 +1,11 @@
 class BinarySpaceBotStrategy {
-    constructor() {}
+    constructor() {
+        this.HALITE_BLOCK_MAX = 10000;
+        this.MAX_SHIPS_PER_BLOCK = 2;
+        this.IDEAL_CAPACITY = 700;
+        this.TURNS_TO_RECREATE = 500;
+        this.tree = null;
+    }
 
     setLogger(logger) {
         this.logger = logger;
@@ -18,6 +24,10 @@ class BinarySpaceBotStrategy {
     }
 
     getNextMoves(game) {
+        if (!this.tree || game.turnNumber % this.TURNS_TO_RECREATE == 0) {
+            buildTree();
+        }
+
         return ["N"];
     }
 }

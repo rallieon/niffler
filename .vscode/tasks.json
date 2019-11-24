@@ -3,21 +3,36 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [{
-        "label": "run",
-        "command": ".\\run_game.bat",
-        "type": "shell",
-        "presentation": {
-            "reveal": "always"
+            "label": "run",
+            "command": ".\\run_game.bat",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "options": {
+                "cwd": "${workspaceRoot}",
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": ["/d", "/c"]
+                }
+            }
         },
-        "problemMatcher": "$msCompile",
-        "options": {
-            "cwd": "${workspaceRoot}",
-            "shell": {
-                "executable": "cmd.exe",
-                "args": [
-                    "/d", "/c"
-                ]
+        {
+            "label": "test",
+            "command": "npm test",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "options": {
+                "cwd": "${workspaceRoot}",
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": ["/d", "/c"]
+                }
             }
         }
-    }]
+    ]
 }
