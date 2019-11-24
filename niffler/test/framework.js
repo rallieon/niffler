@@ -1,6 +1,8 @@
 let assert = require("assert");
 let fs = require("fs");
-const niffler = require("../botStrategyManager");
+const Niffler = require("../botStrategyManager");
+
+let niffler = new Niffler();
 let gameObj = null;
 
 setup(async () => {

@@ -54,4 +54,4 @@ class SimpleBotStrategy {
         return commandQueue;
     }
 }
-module.exports = new SimpleBotStrategy();
+module.exports = SimpleBotStrategy;

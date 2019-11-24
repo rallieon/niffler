@@ -29,9 +29,6 @@ class BlockTree {
             this.traverse(node.right);
         }
     }
-
 }
 
-module.exports = {
-    BlockTree
-};
+module.exports = BlockTree;

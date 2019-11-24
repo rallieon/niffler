@@ -1,7 +1,7 @@
-const binary = require("./binarySpaceBotStrategy");
-const simple = require("./simpleBotStrategy");
+const BinarySpace = require("./binarySpaceBotStrategy");
+const Simple = require("./simpleBotStrategy");
 
 module.exports = [
-    ["BINARY_SPACE", binary],
-    ["SIMPLE", simple]
-]
+    ["BINARY_SPACE", new BinarySpace()],
+    ["SIMPLE", new Simple()]
+];

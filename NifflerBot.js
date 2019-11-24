@@ -1,8 +1,9 @@
 const hlt = require("./hlt");
 const logging = require("./hlt/logging");
-const niffler = require("./niffler");
+const Niffler = require("./niffler");
 const args = process.argv.slice(2);
 const game = new hlt.Game();
+const niffler = new Niffler();
 
 niffler.setLogger(logging);
 niffler.setParameters(args);

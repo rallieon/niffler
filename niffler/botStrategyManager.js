@@ -21,4 +21,4 @@ class BotStrategyManager {
         return this.strategies.get(strategyName).getNextMoves(game);
     }
 }
-module.exports = new BotStrategyManager();
+module.exports = BotStrategyManager;

@@ -13,6 +13,4 @@ class Block {
         this.shipsInRouteToBlock = 0;
     }
 }
-module.exports = {
-    Block
-};
+module.exports = Block;

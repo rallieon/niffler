@@ -33,4 +33,4 @@ class BinarySpaceBotStrategy {
         return ["N"];
     }
 }
-module.exports = new BinarySpaceBotStrategy();
+module.exports = BinarySpaceBotStrategy;
