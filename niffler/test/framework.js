@@ -21,6 +21,6 @@ suite("Game File Processing", () => {
 suite("Binary Space Strategy", () => {
     test("Strategy should have at least one move", () => {
         let moves = niffler.getNextMoves("BINARY_SPACE", gameObj);
-        assert.notEqual(moves, null);
+        assert.ok(moves.length > 0);
     });
 });

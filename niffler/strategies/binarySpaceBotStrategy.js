@@ -23,9 +23,11 @@ class BinarySpaceBotStrategy {
         this.TURNS_TO_RECREATE = parseInt(turnsToRecreate);
     }
 
+    buildTree() {}
+
     getNextMoves(game) {
         if (!this.tree || game.turnNumber % this.TURNS_TO_RECREATE == 0) {
-            buildTree();
+            this.buildTree();
         }
 
         return ["N"];

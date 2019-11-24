@@ -8,7 +8,7 @@
     "mocha": "^6.2.2"
   },
   "scripts": {
-    "test": "mocha niffler/**"
+    "test": "mocha -u tdd niffler/**"
   },
   "repository": {
     "type": "git",

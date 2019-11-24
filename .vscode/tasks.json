@@ -2,7 +2,8 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    "tasks": [{
+    "tasks": [
+        {
             "label": "run",
             "command": ".\\run_game.bat",
             "type": "shell",
@@ -32,6 +33,10 @@
                     "executable": "cmd.exe",
                     "args": ["/d", "/c"]
                 }
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
             }
         }
     ]
