@@ -14,12 +14,7 @@ game.initialize().then(async () => {
 
     while (true) {
         await game.updateFrame();
-        const commandQueue = [];
-
-        for (const move of niffler.getNextMoves("BINARY_SPACE", game)) {
-            commandQueue.push(move);
-        }
-
+        const commandQueue = niffler.getNextMoves("BINARY_SPACE", game);
         await game.endTurn(commandQueue);
     }
 });
