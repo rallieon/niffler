@@ -1,33 +1,36 @@
 const Block = require("./block");
 
 class BlockTree {
-    constructor() {
-        this.root = null;
+    constructor(map, haliteMax) {
+        this.root = this.createNewNode(map, "x");
+        this.HALITE_BLOCK_MAX = haliteMax;
+        this.buildNode(this.root);
     }
 
-    insert(cells, width, height) {
-        let newNode = new Block(cells, width, height);
-
-        if (this.root === null) this.root = newNode;
-        else this.insertNode(this.root, newNode);
-    }
-
-    insertNode(node, newNode) {
-        if (newNode.width < node.width) {
-            if (node.left === null) node.left = newNode;
-            else this.insertNode(node.left, newNode);
+    createNewNode(map, orientation) {
+        let partition = this.selectPartition(map, orientation);
+        if (!partition) {
+            //we have reached the bottom of the tree. Create a leaf
+            return new Block(); //set leaf to true
         } else {
-            if (node.right === null) node.right = newNode;
-            else this.insertNode(node.right, newNode);
+            //create a non-leaf node
+            return new Block();
         }
+        return new Block(map);
     }
 
-    traverse(node) {
-        if (node !== null) {
-            this.traverse(node.left);
-            console.log(node.width);
-            this.traverse(node.right);
-        }
+    selectPartition(map, orientation) {
+        //choose a partition that splits the halite in the current map in half along the orientation
+        //if we have gone below the maximum halite per block, then select no partition.
+    }
+
+    buildNode(node) {
+        if (node.isLeaf) return;
+
+        node.left = this.createNewNode();
+        node.right = this.createNewNode();
+        this.buildNode(node.left);
+        this.buildNode(node.right);
     }
 }
 

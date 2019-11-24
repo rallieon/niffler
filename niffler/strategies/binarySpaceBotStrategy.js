@@ -1,3 +1,7 @@
+const BlockTree = require("../bsp/blockTree");
+const helper = require("../bsp/helper");
+const { Position } = require("../../hlt/positionals");
+
 class BinarySpaceBotStrategy {
     constructor() {
         this.HALITE_BLOCK_MAX = 10000;
@@ -23,11 +27,12 @@ class BinarySpaceBotStrategy {
         this.TURNS_TO_RECREATE = parseInt(turnsToRecreate);
     }
 
-    buildTree() {}
-
     getNextMoves(game) {
-        if (!this.tree || game.turnNumber % this.TURNS_TO_RECREATE == 0) {
-            this.buildTree();
+        if (
+            game.turnNumber === 1 ||
+            game.turnNumber % this.TURNS_TO_RECREATE == 0
+        ) {
+            this.tree = new BlockTree(game.gameMap, this.HALITE_BLOCK_MAX);
         }
 
         return ["N"];

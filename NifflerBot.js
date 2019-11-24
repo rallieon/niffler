@@ -15,7 +15,6 @@ game.initialize().then(async () => {
 
     while (true) {
         await game.updateFrame();
-        logging.debug(JSON.stringify(game));
         const commandQueue = niffler.getNextMoves("BINARY_SPACE", game);
         await game.endTurn(commandQueue);
     }
