@@ -1,6 +1,4 @@
 const BlockTree = require("../bsp/blockTree");
-const helper = require("../bsp/helper");
-const { Position } = require("../../hlt/positionals");
 
 class BinarySpaceBotStrategy {
     constructor() {
