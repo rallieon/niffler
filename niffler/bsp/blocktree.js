@@ -1,19 +1,20 @@
 const Block = require("./block");
 const helper = require("./helper");
-const GameMap = require("../../hlt/gameMap");
+const hlt = require("../../hlt");
+const { Direction, Position } = require("../../hlt/positionals");
 
 class BlockTree {
     constructor(map, haliteMax) {
-        this.root = this.createNewNode(map, "x");
         this.HALITE_BLOCK_MAX = haliteMax;
+        this.root = this.createNewNode(map, "x");
         this.buildNode(this.root);
     }
 
     buildNode(node) {
-        if (node.isLeaf) return;
+        if (node.leaf) return;
 
         //based on the partition, split the map into two
-        let { left, right } = buildChildNodes(node);
+        let { left, right } = this.buildChildNodes(node);
         node.left = left;
         node.right = right;
         this.buildNode(node.left);
@@ -26,10 +27,10 @@ class BlockTree {
         node.totalHalite = totalHalite;
 
         if (!partition) {
-            node.isLeaf = true;
+            node.leaf = true;
         } else {
             node.orientation = orientation;
-            node.partition = node.partition;
+            node.partition = partition;
         }
         return node;
     }
@@ -40,40 +41,48 @@ class BlockTree {
         let nodeLeft,
             nodeRight = null;
 
-        if (node.partition === "x") {
+        if (node.orientation === "x") {
             // x-axis is harder because we are splitting rows.
             // go ahead and set up the game board
-            gameLeft = new Array().map(() => new Array(node.partition));
-            gameRight = new Array().map(() => new Array(node.partition));
+            gameLeft = new Array().fill(new Array(node.partition));
+            gameRight = new Array().fill(new Array(node.partition));
             for (let i = 0; i < node.map.height; i++) {
-                gameLeft.push(map._cells[i].slice(0, node.partition));
-                gameRight.push(map._cells[i].slice(node.partition));
+                gameLeft.push(node.map._cells[i].slice(0, node.partition));
+                gameRight.push(node.map._cells[i].slice(node.partition));
             }
 
             nodeLeft = this.createNewNode(
-                new GameMap(gameLeft, gameLeft[0].length, gameLeft.length),
-                "x"
+                new hlt.GameMap(gameLeft, gameLeft[0].length, gameLeft.length),
+                "y"
             );
             nodeRight = this.createNewNode(
-                new GameMap(gameRight, gameRight[0].length, gameRight.length),
-                "x"
+                new hlt.GameMap(
+                    gameRight,
+                    gameRight[0].length,
+                    gameRight.length
+                ),
+                "y"
             );
-        } else if (node.partition === "y") {
+        } else if (node.orientation === "y") {
             //y axis is easy because we are moving entire lines
             for (let i = 0; i < node.map.height; i++) {
                 if (i < node.partition) {
-                    gameLeft.push(map._cells[i]);
+                    gameLeft.push(node.map._cells[i]);
                 } else {
-                    gameRight.push(map._cells[i]);
+                    gameRight.push(node.map._cells[i]);
                 }
             }
 
             nodeLeft = this.createNewNode(
-                new GameMap(gameLeft, gameLeft[0].length, gameLeft.length),
+                new hlt.GameMap(gameLeft, gameLeft[0].length, gameLeft.length),
                 "x"
             );
             nodeRight = this.createNewNode(
-                new GameMap(gameRight, gameRight[0].length, gameRight.length),
+                new hlt.GameMap(
+                    gameRight,
+                    gameRight[0].length,
+                    gameRight.length
+                ),
                 "x"
             );
         }
@@ -99,7 +108,7 @@ class BlockTree {
             let currentTotal = 0;
             for (let i = 0; i < xTotals.length; i++) {
                 currentTotal += xTotals[i];
-                if (currentTotal > (total > 2)) {
+                if (currentTotal > total / 2) {
                     partitionIndex = i;
                     break;
                 }
@@ -109,7 +118,7 @@ class BlockTree {
             let currentTotal = 0;
             for (let i = 0; i < yTotals.length; i++) {
                 currentTotal += yTotals[i];
-                if (currentTotal > (total > 2)) {
+                if (currentTotal > total / 2) {
                     partitionIndex = i;
                     break;
                 }
@@ -120,15 +129,15 @@ class BlockTree {
     }
 
     getHaliteTotals(map) {
-        let xTotals = new Array(map.width).map(() => 0);
-        let yTotals = new Array(map.height).map(() => 0);
+        let xTotals = new Array(map.width).fill(0);
+        let yTotals = new Array(map.height).fill(0);
         let finalTotal = 0;
 
         for (var i = 0; i < map.width; i++) {
             for (var j = 0; j < map.height; j++) {
                 const cell = map.get(new Position(i, j));
                 yTotals[j] += cell.haliteAmount;
-                yTotals[i] += cell.haliteAmount;
+                xTotals[i] += cell.haliteAmount;
                 finalTotal += cell.haliteAmount;
             }
         }

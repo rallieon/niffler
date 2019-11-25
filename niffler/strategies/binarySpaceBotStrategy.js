@@ -1,4 +1,4 @@
-const BlockTree = require("../bsp/blockTree");
+const BlockTree = require("../bsp/blocktree");
 
 class BinarySpaceBotStrategy {
     constructor() {

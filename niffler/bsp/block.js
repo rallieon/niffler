@@ -11,9 +11,5 @@ class Block {
         this.orientation = null;
         this.partition = null;
     }
-
-    get isLeaf() {
-        return this.isLeaf;
-    }
 }
 module.exports = Block;
