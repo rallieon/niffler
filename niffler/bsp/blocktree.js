@@ -37,8 +37,8 @@ class BlockTree {
 
     buildChildNodes(node) {
         let gameLeft,
-            gameRight = new Array();
-        let nodeLeft,
+            gameRight,
+            nodeLeft,
             nodeRight = null;
 
         if (node.orientation === "x") {
@@ -64,6 +64,9 @@ class BlockTree {
                 "y"
             );
         } else if (node.orientation === "y") {
+            gameLeft = new Array();
+            gameRight = new Array();
+
             //y axis is easy because we are moving entire lines
             for (let i = 0; i < node.map.height; i++) {
                 if (i < node.partition) {
