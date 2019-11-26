@@ -5,6 +5,8 @@ const Block = require("./block");
 class Helper {
     constructor() {
         this.HALITE_BLOCK_MAX = 0;
+        this.originalMap = null;
+        this.player = null;
     }
 
     createNewNode(map, orientation) {
@@ -13,7 +15,17 @@ class Helper {
         node.totalHalite = totalHalite;
 
         if (!partition) {
+            let source = new Position(node.map.width / 2, node.map.height / 2);
+            let destination = new Position(
+                this.player.shipyard.position.x,
+                this.player.shipyard.position.y
+            );
+
             node.leaf = true;
+            node.distanceFromClosestDropoff = this.originalMap.calculateDistance(
+                source,
+                destination
+            );
         } else {
             node.orientation = orientation;
             node.partition = partition;

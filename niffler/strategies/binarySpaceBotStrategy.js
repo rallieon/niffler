@@ -30,7 +30,11 @@ class BinarySpaceBotStrategy {
             game.turnNumber === 1 ||
             game.turnNumber % this.TURNS_TO_RECREATE == 0
         ) {
-            this.tree = new BlockTree(game.gameMap, this.HALITE_BLOCK_MAX);
+            this.tree = new BlockTree(
+                game.gameMap,
+                this.HALITE_BLOCK_MAX,
+                game.me
+            );
         }
 
         return ["N"];

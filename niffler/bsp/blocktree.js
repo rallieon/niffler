@@ -4,8 +4,10 @@ const hlt = require("../../hlt");
 const { Direction, Position } = require("../../hlt/positionals");
 
 class BlockTree {
-    constructor(map, haliteMax) {
+    constructor(map, haliteMax, player) {
         helper.HALITE_BLOCK_MAX = haliteMax;
+        helper.originalMap = map;
+        helper.player = player;
         this.root = helper.createNewNode(map, "x");
         this.buildNode(this.root);
     }
