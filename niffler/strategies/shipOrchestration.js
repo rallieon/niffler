@@ -147,8 +147,9 @@ class ShipOrchestration {
         // and you have enough halite to build a ship
         // and no other ship is in the shipyard
         // then build a new ship
+        //TODO Convert to parameters for injection
         if (
-            game.turnNumber < 0.75 * hlt.constants.MAX_TURNS &&
+            game.turnNumber < 0.5 * hlt.constants.MAX_TURNS &&
             me.haliteAmount >= hlt.constants.SHIP_COST &&
             !gameMap.get(me.shipyard).isOccupied
         ) {
