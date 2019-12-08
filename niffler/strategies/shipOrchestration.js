@@ -1,11 +1,12 @@
 const hlt = require("../../hlt");
 
 class ShipOrchestration {
-    constructor(config) {
+    constructor(config, logger) {
         this.shipsInRoute = new Map();
         this.shipsBackToSpawn = new Map();
         this.shipInNode = new Map();
         this.config = config;
+        this.logger = logger;
     }
 
     getMaximumFitness(nodes) {
@@ -37,7 +38,9 @@ class ShipOrchestration {
             }
         }
 
-        return maxPos;
+        //convert the leaf's relative position to the absolute position on the map
+        let modified = node.getModifiedPosition(maxPos.x, maxPos.y);
+        return new hlt.Position(modified.x, modified.y);
     }
 
     getNextMoves(game, tree) {
@@ -47,18 +50,28 @@ class ShipOrchestration {
         for (const ship of me.getShips()) {
             //check and see if the ship is in route already OR if its in route back to the spawn
             //TODO: Update to create more spawn points
-
             let isInRouteToNode = this.shipsInRoute.get(ship.id);
             let isInRouteToSpawn = this.shipsBackToSpawn.get(ship.id);
 
-            //check if the ship has 0 halite which likely means it has reached spawn point and start over
-            if (ship.haliteAmount === 0) {
+            this.logger.debug(
+                `Turn number = ${game.turnNumber}, ship = ${ship.id}, shipHalite = ${ship.haliteAmount}`
+            );
+
+            //are we at the spawn point. If so, reset for this ship
+            if (
+                ship.position.x === me.shipyard.position.x &&
+                ship.position.y === me.shipyard.position.y
+            ) {
+                this.logger.debug(`Ship ${ship.id} is back at the shipyard.`);
                 this.shipsBackToSpawn.delete(ship.id);
                 this.shipsInRoute.delete(ship.id);
             }
 
             //if they have reached the ship capacity (based on configuration of parameter) then return home
-            if (ship.haliteAmount > this.config.halitemax) {
+            if (ship.haliteAmount > this.config.params.halitemax) {
+                this.logger.debug(
+                    `Ship ${ship.id} is going to turn around to spawn`
+                );
                 let node = this.shipsInRoute.get(ship.id);
                 if (node) {
                     node.shipsInRouteToBlock--;
@@ -72,13 +85,21 @@ class ShipOrchestration {
             }
 
             if (isInRouteToNode) {
+                let selected = isInRouteToNode.node;
+                this.logger.debug(
+                    `Ship ${ship.id} is in route to node (distanceFromClosestDropoff=${selected.distanceFromClosestDropoff}, shipsInRouteToBlock = ${selected.shipsInRouteToBlock}, nodeHalite = ${selected.totalHalite}, width= ${selected.map.width}, height= ${selected.map.height})`
+                );
                 //move to the cell with the most halite in that node (greedy algorithm)
                 const destination = this.getPositionWithMostHalite(
                     isInRouteToNode.node
                 );
                 const safeMove = gameMap.naiveNavigate(ship, destination);
+                this.logger.debug(
+                    `Ship is moving to ${JSON.stringify(destination)}`
+                );
                 commandQueue.push(ship.move(safeMove));
             } else if (isInRouteToSpawn) {
+                this.logger.debug(`Ship ${ship.id} is in route to spawn`);
                 const destination = me.shipyard.position;
                 const safeMove = gameMap.naiveNavigate(ship, destination);
                 commandQueue.push(ship.move(safeMove));
@@ -86,6 +107,10 @@ class ShipOrchestration {
                 //traverse through the tree and apply a fitness function to each leaf node.
                 let leaves = tree.getLeaves();
                 let selected = this.getMaximumFitness(leaves);
+                this.logger.debug(`Choosing Node for ship ${ship.id}`);
+                this.logger.debug(
+                    `selected = ${selected.leaf}, distanceFromClosestDropoff=${selected.distanceFromClosestDropoff}, shipsInRouteToBlock = ${selected.shipsInRouteToBlock}, nodeHalite = ${selected.totalHalite}, width= ${selected.map.width}, height= ${selected.map.height}`
+                );
 
                 //update the node
                 selected.shipsInRouteToBlock++;

@@ -1,6 +1,7 @@
 class Block {
-    constructor(map, level, config) {
+    constructor(map, level, config, originalMap) {
         this.map = map;
+        this.originalMap = originalMap;
         this.level = level;
         this.config = config;
         this.left = null;
@@ -11,16 +12,22 @@ class Block {
         this.leaf = false;
         this.orientation = null;
         this.partition = null;
+        this.xModifier = 0;
+        this.yModifier = 0;
+    }
+
+    getModifiedPosition(x, y) {
+        return { x: x + this.xModifier, y: y + this.yModifier };
     }
 
     getFitness() {
         //TODO parameterize these fitness values as apart of the genetic algorithm
         //maximum value is the best
         return (
-            (this.shipsInRouteToBlock >= this.config.maxships
-                ? this.shipsInRouteToBlock * (1 / 5000)
-                : this.shipsInRouteToBlock * (1 / 1000)) +
-            this.distanceFromClosestDropoff * (1 / 10) +
+            (this.shipsInRouteToBlock < this.config.params.maxships
+                ? 50000
+                : this.shipsInRouteToBlock) +
+            1 / this.distanceFromClosestDropoff +
             this.totalHalite
         );
     }

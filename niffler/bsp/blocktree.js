@@ -19,6 +19,16 @@ class BlockTree {
         let { left, right } = this.buildChildNodes(node);
         node.left = left;
         node.right = right;
+
+        //TODO comment better, tracking absolute position
+        if (node.orientation === "x") {
+            node.right.xModifier = node.xModifier + node.partition;
+            node.left.xModifier = node.xModifier;
+        }
+        if (node.orientation === "y") {
+            node.right.yModifier = node.yModifier + node.partition;
+            node.left.yModifier = node.yModifier;
+        }
         this.buildNode(node.left);
         this.buildNode(node.right);
     }
