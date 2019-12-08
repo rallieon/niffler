@@ -9,9 +9,9 @@ class Helper {
         this.player = null;
     }
 
-    createNewNode(map, orientation) {
+    createNewNode(map, orientation, level) {
         let { partition, totalHalite } = this.selectPartition(map, orientation);
-        let node = new Block(map);
+        let node = new Block(map, level);
         node.totalHalite = totalHalite;
 
         if (!partition) {
@@ -102,7 +102,8 @@ class Helper {
         return {
             left: this.createNewNode(
                 new hlt.GameMap(gameLeft, gameLeft[0].length, gameLeft.length),
-                "y"
+                "y",
+                node.level + 1
             ),
             right: this.createNewNode(
                 new hlt.GameMap(
@@ -110,7 +111,8 @@ class Helper {
                     gameRight[0].length,
                     gameRight.length
                 ),
-                "y"
+                "y",
+                node.level + 1
             )
         };
     }
@@ -134,7 +136,8 @@ class Helper {
         return {
             left: this.createNewNode(
                 new hlt.GameMap(gameLeft, gameLeft[0].length, gameLeft.length),
-                "x"
+                "x",
+                node.level + 1
             ),
             right: this.createNewNode(
                 new hlt.GameMap(
@@ -142,7 +145,8 @@ class Helper {
                     gameRight[0].length,
                     gameRight.length
                 ),
-                "x"
+                "x",
+                node.level + 1
             )
         };
     }

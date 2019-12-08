@@ -2,7 +2,9 @@ const hlt = require("../../hlt");
 
 class ShipOrchestration {
     constructor(config) {
-        this.ships = new Array();
+        this.shipsInRoute = new Map();
+        this.shipsBackToSpawn = new Map();
+        this.shipInNode = new Map();
         this.config = config;
     }
 
@@ -11,27 +13,45 @@ class ShipOrchestration {
         const { gameMap, me } = game;
 
         for (const ship of me.getShips()) {
-            //traverse through the tree and apply a fitness function to each leaf node.
-            //have the ship travel to the
-            let leaves = tree.getLeaves();
-            let selected = Math.max(...leaves.map(leaf => leaf.getFitness()));
+            //check and see if the ship is in route already OR if its in route back to the spawn
+            //TODO: Update to create more spawn points
 
-            if (ship.haliteAmount > hlt.constants.MAX_HALITE / 2) {
-                // if the current ships halite is greater than half the amount the ship can hold
-                // (default 1000) then move back to the shipyard.
+            let isInRouteToNode = this.shipsInRoute.get(ship.id);
+            let isInRouteToSpawn = this.shipsBackToSpawn.get(ship.id);
+
+            //check if the ship has 0 halite which likely means it has reached spawn point
+            if (ship.haliteAmount === 0) {
+                this.shipsBackToSpawn.delete(ship.id);
+                this.shipsInRoute.delete(ship.id);
+            }
+
+            if (isInRouteToNode) {
+                //check to see if the ship is already in the node
+            } else if (isInRouteToSpawn) {
                 const destination = me.shipyard.position;
                 const safeMove = gameMap.naiveNavigate(ship, destination);
                 commandQueue.push(ship.move(safeMove));
-            } else if (
-                gameMap.get(ship.position).haliteAmount <
-                hlt.constants.MAX_HALITE / 10
-            ) {
-                // else if the current cells haliate is less than 1/10 of the max malite of a ship
-                // (default 1000) then pick a random direction and get off the cell.
-                const direction = Direction.getAllCardinals()[
-                    Math.floor(4 * Math.random())
-                ];
-                const destination = ship.position.directionalOffset(direction);
+            } else {
+                //traverse through the tree and apply a fitness function to each leaf node.
+                let leaves = tree.getLeaves();
+                let selected = Math.max(
+                    ...leaves.map(leaf => leaf.getFitness())
+                );
+
+                //update the node
+                selected.shipsInRouteToBlock++;
+                this.shipsInRoute.set(ship.id, {
+                    ship: ship,
+                    node: selected
+                });
+
+                //create the move and add to queue
+                const destination = selected.map.get(
+                    new Position(
+                        selected.map.width / 2,
+                        selected.map.height / 2
+                    )
+                );
                 const safeMove = gameMap.naiveNavigate(ship, destination);
                 commandQueue.push(ship.move(safeMove));
             }

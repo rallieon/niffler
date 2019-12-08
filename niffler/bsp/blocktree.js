@@ -8,7 +8,7 @@ class BlockTree {
         helper.HALITE_BLOCK_MAX = haliteMax;
         helper.originalMap = map;
         helper.player = player;
-        this.root = helper.createNewNode(map, "x");
+        this.root = helper.createNewNode(map, "x", 0);
         this.buildNode(this.root);
     }
 

@@ -1,6 +1,7 @@
 class Block {
-    constructor(map) {
+    constructor(map, level) {
         this.map = map;
+        this.level = level;
         this.left = null;
         this.right = null;
         this.totalHalite = 0;
