@@ -18,8 +18,8 @@ class Block {
         //maximum value is the best
         return (
             (this.shipsInRouteToBlock >= this.config.maxships
-                ? this.shipsInRouteToBlock * 5000
-                : this.shipsInRouteToBlock * 1000) +
+                ? this.shipsInRouteToBlock * (1 / 5000)
+                : this.shipsInRouteToBlock * (1 / 1000)) +
             this.distanceFromClosestDropoff * (1 / 10) +
             this.totalHalite
         );

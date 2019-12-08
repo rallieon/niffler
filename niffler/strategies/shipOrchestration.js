@@ -8,10 +8,36 @@ class ShipOrchestration {
         this.config = config;
     }
 
-    getCellWithMostHalite(node) {
-        return Math.max(
-            ...node.map._cells.map(row => row.map(cell => cell.haliteAmount))
-        );
+    getMaximumFitness(nodes) {
+        let max = 0;
+        let maxNode = null;
+
+        for (let node of nodes) {
+            if (node.getFitness() > max) {
+                maxNode = node;
+                max = node.getFitness();
+            }
+        }
+
+        return maxNode;
+    }
+
+    getPositionWithMostHalite(node) {
+        let max = 0;
+        let maxPos = null;
+
+        for (var i = 0; i < node.map.width; i++) {
+            for (var j = 0; j < node.map.height; j++) {
+                let pos = new hlt.Position(i, j);
+                const cell = node.map.get(pos);
+                if (cell.haliteAmount > max) {
+                    max = cell.haliteAmount;
+                    maxPos = pos;
+                }
+            }
+        }
+
+        return maxPos;
     }
 
     getNextMoves(game, tree) {
@@ -47,7 +73,9 @@ class ShipOrchestration {
 
             if (isInRouteToNode) {
                 //move to the cell with the most halite in that node (greedy algorithm)
-                const destination = getCellWithMostHalite(isInRouteToNode.node);
+                const destination = this.getPositionWithMostHalite(
+                    isInRouteToNode.node
+                );
                 const safeMove = gameMap.naiveNavigate(ship, destination);
                 commandQueue.push(ship.move(safeMove));
             } else if (isInRouteToSpawn) {
@@ -57,9 +85,7 @@ class ShipOrchestration {
             } else {
                 //traverse through the tree and apply a fitness function to each leaf node.
                 let leaves = tree.getLeaves();
-                let selected = Math.max(
-                    ...leaves.map(leaf => leaf.getFitness())
-                );
+                let selected = this.getMaximumFitness(leaves);
 
                 //update the node
                 selected.shipsInRouteToBlock++;
@@ -69,7 +95,7 @@ class ShipOrchestration {
                 });
 
                 //create the move and add to queue
-                const destination = getCellWithMostHalite(selected);
+                const destination = this.getPositionWithMostHalite(selected);
                 const safeMove = gameMap.naiveNavigate(ship, destination);
                 commandQueue.push(ship.move(safeMove));
             }
