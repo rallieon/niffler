@@ -66,7 +66,6 @@ class Block
     int height
     int totalHalite
     int distanceFromClosestDropoff
-    list shipsInBlock
     list shipsInRouteToBlock
 }
 

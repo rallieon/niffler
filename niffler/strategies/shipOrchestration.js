@@ -25,10 +25,24 @@ class ShipOrchestration {
             let isInRouteToNode = this.shipsInRoute.get(ship.id);
             let isInRouteToSpawn = this.shipsBackToSpawn.get(ship.id);
 
-            //check if the ship has 0 halite which likely means it has reached spawn point
+            //check if the ship has 0 halite which likely means it has reached spawn point and start over
             if (ship.haliteAmount === 0) {
                 this.shipsBackToSpawn.delete(ship.id);
                 this.shipsInRoute.delete(ship.id);
+            }
+
+            //if they have reached the ship capacity (based on configuration of parameter) then return home
+            if (ship.haliteAmount > this.config.halitemax) {
+                let node = this.shipsInRoute.get(ship.id);
+                if (node) {
+                    node.shipsInRouteToBlock--;
+                    this.shipsInRoute.delete(ship.id);
+                }
+
+                this.shipsBackToSpawn.set(ship.id, {
+                    ship: ship,
+                    node: selected
+                });
             }
 
             if (isInRouteToNode) {

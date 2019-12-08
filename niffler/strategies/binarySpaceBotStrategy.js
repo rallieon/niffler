@@ -23,7 +23,7 @@ class BinarySpaceBotStrategy {
             game.turnNumber === 1 ||
             game.turnNumber % this.config.recreate == 0
         ) {
-            this.tree = new BlockTree(game.gameMap, this.halitemax, game.me);
+            this.tree = new BlockTree(game.gameMap, this.config, game.me);
             this.shipOrchestrator = new ShipOrchestration(this.config);
         }
 

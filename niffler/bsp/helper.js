@@ -4,14 +4,14 @@ const Block = require("./block");
 
 class Helper {
     constructor() {
-        this.HALITE_BLOCK_MAX = 0;
+        this.config = null;
         this.originalMap = null;
         this.player = null;
     }
 
     createNewNode(map, orientation, level) {
         let { partition, totalHalite } = this.selectPartition(map, orientation);
-        let node = new Block(map, level);
+        let node = new Block(map, level, this.config);
         node.totalHalite = totalHalite;
 
         if (!partition) {
@@ -39,7 +39,7 @@ class Helper {
         let { xTotals, yTotals, total } = this.getHaliteTotals(map);
         let partitionIndex = null;
 
-        if (total < this.HALITE_BLOCK_MAX)
+        if (total < this.config.halitemax)
             return {
                 partition: partitionIndex,
                 totalHalite: total
