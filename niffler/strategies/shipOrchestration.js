@@ -1,3 +1,5 @@
+const hlt = require("../../hlt");
+
 class ShipOrchestration {
     constructor(config) {
         this.ships = new Array();
