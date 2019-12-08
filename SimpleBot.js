@@ -1,15 +1,13 @@
 const hlt = require("./hlt");
 const logging = require("./hlt/logging");
-const niffler = require("./niffler");
-
+const Niffler = require("./niffler");
 const game = new hlt.Game();
-
-niffler.setParameters(...args);
-niffler.setLogger(logging);
+const args = require("yargs").argv;
+const niffler = new Niffler(logging, args);
 
 game.initialize().then(async () => {
-    await game.ready("KeithBotSIMPLE");
-
+    await game.ready("KeithBotSimple");
+    logging.info(process.argv);
     logging.info(`My Player ID is ${game.myId}.`);
 
     while (true) {

@@ -1,12 +1,9 @@
 const hlt = require("./hlt");
 const logging = require("./hlt/logging");
 const Niffler = require("./niffler");
-const args = process.argv.slice(2);
 const game = new hlt.Game();
-const niffler = new Niffler();
-
-niffler.setLogger(logging);
-niffler.setParameters(args);
+const args = require("yargs").argv;
+const niffler = new Niffler(logging, args);
 
 game.initialize().then(async () => {
     await game.ready("KeithBotBINARY_SPACE");

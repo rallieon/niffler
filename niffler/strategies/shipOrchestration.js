@@ -1,7 +1,9 @@
 class ShipOrchestration {
-    constructor() {
+    constructor(config) {
         this.ships = new Array();
+        this.config = config;
     }
+
     getNextMoves(game, tree) {
         const commandQueue = [];
         const { gameMap, me } = game;
@@ -10,10 +12,7 @@ class ShipOrchestration {
             //traverse through the tree and apply a fitness function to each leaf node.
             //have the ship travel to the
             let leaves = tree.getLeaves();
-            let selected = Math.max.apply(
-                Math,
-                leaves.map(leaf => leaf.getFitness())
-            );
+            let selected = Math.max(...leaves.map(leaf => leaf.getFitness()));
 
             if (ship.haliteAmount > hlt.constants.MAX_HALITE / 2) {
                 // if the current ships halite is greater than half the amount the ship can hold

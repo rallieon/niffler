@@ -9,12 +9,37 @@ let gameObj = null;
 
 setup(async () => {
     let content = fs.readFileSync("./niffler/data/game.json");
+
     gameObj = JSON.parse(content);
     gameObj.gameMap = new hlt.GameMap(
-        gameObj.gameMap._cells,
+        gameObj.gameMap._cells.map(row => {
+            return row.map(
+                cell =>
+                    new hlt.MapCell(
+                        new Position(cell.position.x, cell.position.y),
+                        cell.haliteAmount
+                    )
+            );
+        }),
         gameObj.gameMap.width,
         gameObj.gameMap.height
     );
+
+    let player = new hlt.Player(
+        1,
+        new hlt.Shipyard(1, 1, new hlt.Position(0, 0)),
+        0
+    );
+
+    let ship = new hlt.Ship(1, 1, new hlt.Position(1, 1));
+    ship.haliteAmount = 500;
+    hlt.constants.MAX_HALITE = 500;
+    hlt.constants.MAX_TURNS = 400;
+
+    player._ships = new Map();
+    player._ships.set(1, ship);
+
+    gameObj.me = player;
 });
 
 suite("Game File Processing", () => {
@@ -29,6 +54,13 @@ suite("Game File Processing", () => {
     test("Can get a map cell", () => {
         let cell = gameObj.gameMap.get(new Position(0, 0));
         assert.equal(cell.haliteAmount, 5);
+    });
+});
+
+suite("Simple Strategy", () => {
+    test("Strategy should have at least one move", () => {
+        let moves = niffler.getNextMoves("SIMPLE", gameObj);
+        assert.ok(moves.length > 0);
     });
 });
 
