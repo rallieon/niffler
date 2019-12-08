@@ -30,6 +30,20 @@ class BlockTree {
             return helper.buildYOrientationNodes(node);
         }
     }
+
+    getLeaves() {
+        let result = new Array();
+        this.visit(result, this.root);
+        return result;
+    }
+
+    visit(accumulator, currentValue) {
+        if (!currentValue) return;
+
+        this.visit(accumulator, currentValue.left);
+        if (currentValue.leaf) accumulator.push(currentValue);
+        this.visit(accumulator, currentValue.right);
+    }
 }
 
 module.exports = BlockTree;

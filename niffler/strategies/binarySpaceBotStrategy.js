@@ -1,4 +1,5 @@
 const BlockTree = require("../bsp/blocktree");
+const ShipOrchestration = require("./shipOrchestration");
 
 class BinarySpaceBotStrategy {
     constructor() {
@@ -7,6 +8,7 @@ class BinarySpaceBotStrategy {
         this.IDEAL_CAPACITY = 700;
         this.TURNS_TO_RECREATE = 500;
         this.tree = null;
+        this.shipOrchestrator = null;
     }
 
     setLogger(logger) {
@@ -35,9 +37,10 @@ class BinarySpaceBotStrategy {
                 this.HALITE_BLOCK_MAX,
                 game.me
             );
+            this.shipOrchestrator = new ShipOrchestration();
         }
 
-        return ["N"];
+        return this.shipOrchestrator.getNextMoves(game, this.tree);
     }
 }
 module.exports = BinarySpaceBotStrategy;
