@@ -24,10 +24,16 @@ class BlockTree {
         if (node.orientation === "x") {
             node.right.xModifier = node.xModifier + node.partition;
             node.left.xModifier = node.xModifier;
+
+            node.right.yModifier = node.yModifier;
+            node.left.yModifier = node.yModifier;
         }
         if (node.orientation === "y") {
             node.right.yModifier = node.yModifier + node.partition;
             node.left.yModifier = node.yModifier;
+
+            node.right.xModifier = node.xModifier;
+            node.left.xModifier = node.xModifier;
         }
         this.buildNode(node.left);
         this.buildNode(node.right);

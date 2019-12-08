@@ -5,14 +5,14 @@ const logging = require("../../hlt/logging");
 const Niffler = require("../botStrategyManager");
 const hlt = require("../../hlt");
 const { Direction, Position } = require("../../hlt/positionals");
-const config = new Config({
+const params = {
     halitemax: 5000,
     maxships: 1,
     capacity: 500,
     recreate: 100
-});
+};
 
-let niffler = new Niffler(logging);
+let niffler = new Niffler(logging, params);
 let gameObj = null;
 
 setup(async () => {
