@@ -8,6 +8,12 @@ class ShipOrchestration {
         this.config = config;
     }
 
+    getCellWithMostHalite(node) {
+        return Math.max(
+            ...node.map._cells.map(row => row.map(cell => cell.haliteAmount))
+        );
+    }
+
     getNextMoves(game, tree) {
         const commandQueue = [];
         const { gameMap, me } = game;
@@ -26,7 +32,10 @@ class ShipOrchestration {
             }
 
             if (isInRouteToNode) {
-                //check to see if the ship is already in the node
+                //move to the cell with the most halite in that node (greedy algorithm)
+                const destination = getCellWithMostHalite(isInRouteToNode.node);
+                const safeMove = gameMap.naiveNavigate(ship, destination);
+                commandQueue.push(ship.move(safeMove));
             } else if (isInRouteToSpawn) {
                 const destination = me.shipyard.position;
                 const safeMove = gameMap.naiveNavigate(ship, destination);
@@ -46,12 +55,7 @@ class ShipOrchestration {
                 });
 
                 //create the move and add to queue
-                const destination = selected.map.get(
-                    new Position(
-                        selected.map.width / 2,
-                        selected.map.height / 2
-                    )
-                );
+                const destination = getCellWithMostHalite(selected);
                 const safeMove = gameMap.naiveNavigate(ship, destination);
                 commandQueue.push(ship.move(safeMove));
             }
