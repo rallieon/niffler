@@ -3,15 +3,15 @@ const { Direction, Position } = require("../../hlt/positionals");
 const Block = require("./block");
 
 class Helper {
-    constructor() {
-        this.config = null;
-        this.originalMap = null;
-        this.player = null;
+    constructor(config, player, map) {
+        this.config = config;
+        this.originalMap = map;
+        this.player = player;
     }
 
     createNewNode(map, orientation, level) {
         let { partition, totalHalite } = this.selectPartition(map, orientation);
-        let node = new Block(map, level, this.config, this.originalMap);
+        let node = new Block(map, level, this.config);
         node.totalHalite = totalHalite;
 
         if (!partition) {
@@ -45,7 +45,6 @@ class Helper {
                 totalHalite: total
             };
 
-        //TODO refactor this to be less copy/paste
         if (orientation === "x") {
             //this is a vertical split of the node
             let currentTotal = 0;
@@ -152,4 +151,4 @@ class Helper {
     }
 }
 
-module.exports = new Helper();
+module.exports = Helper;

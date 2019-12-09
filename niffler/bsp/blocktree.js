@@ -1,14 +1,12 @@
 const Block = require("./block");
-const helper = require("./helper");
+const Helper = require("./helper");
 const hlt = require("../../hlt");
 const { Direction, Position } = require("../../hlt/positionals");
 
 class BlockTree {
     constructor(map, config, player) {
-        helper.config = config; //TODO this feels bad
-        helper.originalMap = map;
-        helper.player = player;
-        this.root = helper.createNewNode(map, "x", 0);
+        this.helper = new Helper(config, player, map);
+        this.root = this.helper.createNewNode(map, "x", 0);
         this.buildNode(this.root);
     }
 
@@ -20,7 +18,9 @@ class BlockTree {
         node.left = left;
         node.right = right;
 
-        //TODO comment better, tracking absolute position
+        //add the modifier values to the node incrementally so that the absolute
+        //position of the node's map can be traced back to the absolute position in
+        //the global map
         if (node.orientation === "x") {
             node.right.xModifier = node.xModifier + node.partition;
             node.left.xModifier = node.xModifier;
@@ -41,9 +41,9 @@ class BlockTree {
 
     buildChildNodes(node) {
         if (node.orientation === "x") {
-            return helper.buildXOrientationNodes(node);
+            return this.helper.buildXOrientationNodes(node);
         } else if (node.orientation === "y") {
-            return helper.buildYOrientationNodes(node);
+            return this.helper.buildYOrientationNodes(node);
         }
     }
 
