@@ -13,7 +13,7 @@ const params = {
     fitnessformaxships: 5000,
     fitnessfordistancetodropoff: 1,
     halitecellmodifier: 10,
-    modifierturnsships: 0.5
+    modifierturnsships: 2
 };
 
 let niffler = new Niffler(logging, params);

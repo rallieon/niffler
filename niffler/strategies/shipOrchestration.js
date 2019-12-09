@@ -114,8 +114,8 @@ class ShipOrchestration {
     canBuildSpawnPoint(game, player) {
         return (
             game.turnNumber <
-                this.config.params.modifierturnsships *
-                    hlt.constants.MAX_TURNS &&
+                hlt.constants.MAX_TURNS /
+                    this.config.params.modifierturnsships &&
             player.haliteAmount >= hlt.constants.SHIP_COST &&
             !game.gameMap.get(player.shipyard).isOccupied
         );
