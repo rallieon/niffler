@@ -53,32 +53,17 @@ class ShipOrchestration {
             let isInRouteToNode = this.shipsInRoute.get(ship.id);
             let isInRouteToSpawn = this.shipsBackToSpawn.get(ship.id);
 
-            this.logger.debug(
-                `Turn number = ${game.turnNumber}, ship = ${
-                    ship.id
-                }, shipHalite = ${ship.haliteAmount}, shipPositionHalite=${
-                    gameMap.get(ship.position).haliteAmount
-                }, maxHalite = ${hlt.constants.MAX_HALITE}`
-            );
-
             //are we at the spawn point. If so, reset for this ship
             if (
                 ship.position.x === me.shipyard.position.x &&
                 ship.position.y === me.shipyard.position.y
             ) {
-                this.logger.debug(`Ship ${ship.id} is back at the shipyard.`);
                 this.shipsBackToSpawn.delete(ship.id);
                 this.shipsInRoute.delete(ship.id);
             }
 
-            this.logger.debug(
-                `Checking if Ship ${ship.id} halite ${ship.haliteAmount} > ${this.config.params.capacity} is true`
-            );
             //if they have reached the ship capacity (based on configuration of parameter) then return home
             if (ship.haliteAmount > this.config.params.capacity) {
-                this.logger.debug(
-                    `Ship ${ship.id} is going to turn around to spawn`
-                );
                 let node = this.shipsInRoute.get(ship.id);
                 if (node) {
                     node.shipsInRouteToBlock--;
@@ -94,9 +79,6 @@ class ShipOrchestration {
             //TODO, Fix this is very confusing
             if (isInRouteToNode) {
                 let selected = isInRouteToNode.node;
-                this.logger.debug(
-                    `Ship ${ship.id} is in route to node (distanceFromClosestDropoff=${selected.distanceFromClosestDropoff}, shipsInRouteToBlock = ${selected.shipsInRouteToBlock}, nodeHalite = ${selected.totalHalite}, width= ${selected.map.width}, height= ${selected.map.height})`
-                );
 
                 //we are on a cell that has halite. pause to collect
                 if (
@@ -110,13 +92,9 @@ class ShipOrchestration {
                         isInRouteToNode.node
                     );
                     const safeMove = gameMap.naiveNavigate(ship, destination);
-                    this.logger.debug(
-                        `Ship is moving to ${JSON.stringify(destination)}`
-                    );
                     commandQueue.push(ship.move(safeMove));
                 }
             } else if (isInRouteToSpawn) {
-                this.logger.debug(`Ship ${ship.id} is in route to spawn`);
                 const destination = me.shipyard.position;
                 const safeMove = gameMap.naiveNavigate(ship, destination);
                 commandQueue.push(ship.move(safeMove));
@@ -124,10 +102,6 @@ class ShipOrchestration {
                 //traverse through the tree and apply a fitness function to each leaf node.
                 let leaves = tree.getLeaves();
                 let selected = this.getMaximumFitness(leaves);
-                this.logger.debug(`Choosing Node for ship ${ship.id}`);
-                this.logger.debug(
-                    `selected = ${selected.leaf}, distanceFromClosestDropoff=${selected.distanceFromClosestDropoff}, shipsInRouteToBlock = ${selected.shipsInRouteToBlock}, nodeHalite = ${selected.totalHalite}, width= ${selected.map.width}, height= ${selected.map.height}`
-                );
 
                 //update the node
                 selected.shipsInRouteToBlock++;

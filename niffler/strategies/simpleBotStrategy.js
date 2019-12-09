@@ -3,17 +3,9 @@ const { Direction } = require("../../hlt/positionals");
 const Config = require("../config");
 
 class SimpleBotStrategy {
-    constructor() {
-        this.config = null;
-        this.logger = null;
-    }
-
-    setLogger(logger) {
-        this.logger = logger;
-    }
-
-    setParameters(params) {
+    constructor(logger, params) {
         this.config = new Config(params);
+        this.logger = logger;
     }
 
     getNextMoves(game) {

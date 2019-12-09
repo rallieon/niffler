@@ -5,7 +5,7 @@ const { Direction, Position } = require("../../hlt/positionals");
 
 class BlockTree {
     constructor(map, config, player) {
-        helper.config = config;
+        helper.config = config; //TODO this feels bad
         helper.originalMap = map;
         helper.player = player;
         this.root = helper.createNewNode(map, "x", 0);

@@ -3,19 +3,11 @@ const ShipOrchestration = require("./shipOrchestration");
 const Config = require("../config");
 
 class BinarySpaceBotStrategy {
-    constructor() {
+    constructor(logger, params) {
         this.tree = null;
         this.shipOrchestrator = null;
-        this.config = null;
-        this.logger = null;
-    }
-
-    setLogger(logger) {
-        this.logger = logger;
-    }
-
-    setParameters(params) {
         this.config = new Config(params);
+        this.logger = logger;
     }
 
     getNextMoves(game) {
