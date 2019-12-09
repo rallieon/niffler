@@ -43,7 +43,7 @@ class ShipOrchestration {
         return new hlt.Position(modified.x, modified.y);
     }
 
-    cleanUpShips(ship, me) {
+    cleanUpShipDetails(ship, me) {
         //are we at the spawn point. If so, reset for this ship
         if (
             ship.position.x === me.shipyard.position.x &&
@@ -54,7 +54,7 @@ class ShipOrchestration {
         }
     }
 
-    checkShipHaliteStorage(ship) {
+    updateShipDetails(ship) {
         //if they have reached the ship capacity (based on configuration of parameter) then return home
         if (ship.haliteAmount > this.config.params.capacity) {
             let node = this.shipsInRoute.get(ship.id);
@@ -111,12 +111,26 @@ class ShipOrchestration {
         });
     }
 
+    canBuildSpawnPoint(game, player) {
+        return (
+            game.turnNumber <
+                this.config.params.modifierturnsships *
+                    hlt.constants.MAX_TURNS &&
+            player.haliteAmount >= hlt.constants.SHIP_COST &&
+            !game.gameMap.get(player.shipyard).isOccupied
+        );
+    }
+
+    getSpawnPoint(player) {
+        return player.shipyard.spawn();
+    }
+
     getNextMoves(game, tree) {
         const commandQueue = [];
         const { gameMap, me } = game;
 
         for (const ship of me.getShips()) {
-            this.checkShipHaliteStorage(ship);
+            this.updateShipDetails(ship);
 
             if (this.isShipInRouteToNode(ship)) {
                 commandQueue.push(this.navigateShipToNode(ship, gameMap));
@@ -129,18 +143,11 @@ class ShipOrchestration {
                 commandQueue.push(this.navigateShipToNode(ship, gameMap));
             }
 
-            this.cleanUpShips(ship, me);
+            this.cleanUpShipDetails(ship, me);
         }
 
-        //build ships based on criteria
-        if (
-            game.turnNumber <
-                this.config.params.modifierturnsships *
-                    hlt.constants.MAX_TURNS &&
-            me.haliteAmount >= hlt.constants.SHIP_COST &&
-            !gameMap.get(me.shipyard).isOccupied
-        ) {
-            commandQueue.push(me.shipyard.spawn());
+        if (this.canBuildSpawnPoint(game, me)) {
+            commandQueue.push(this.getSpawnPoint(me));
         }
 
         return commandQueue;

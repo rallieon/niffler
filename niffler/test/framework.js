@@ -1,10 +1,10 @@
 let assert = require("assert");
 let fs = require("fs");
-let Config = require("../config");
 const logging = require("../../hlt/logging");
 const Niffler = require("../botStrategyManager");
 const hlt = require("../../hlt");
-const { Direction, Position } = require("../../hlt/positionals");
+const { Position } = require("../../hlt/positionals");
+
 const params = {
     halitemax: 5000,
     maxships: 1,
