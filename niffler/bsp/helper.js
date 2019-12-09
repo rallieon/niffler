@@ -1,5 +1,5 @@
 const hlt = require("../../hlt");
-const { Direction, Position } = require("../../hlt/positionals");
+const { Position } = require("../../hlt/positionals");
 const Block = require("./block");
 
 class Helper {

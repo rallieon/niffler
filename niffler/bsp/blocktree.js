@@ -1,7 +1,4 @@
-const Block = require("./block");
 const Helper = require("./helper");
-const hlt = require("../../hlt");
-const { Direction, Position } = require("../../hlt/positionals");
 
 class BlockTree {
     constructor(map, config, player) {
