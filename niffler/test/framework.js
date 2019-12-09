@@ -9,7 +9,11 @@ const params = {
     halitemax: 5000,
     maxships: 1,
     capacity: 500,
-    recreate: 100
+    recreate: 100,
+    fitnessformaxships: 5000,
+    fitnessfordistancetodropoff: 1,
+    halitecellmodifier: 10,
+    modifierturnsships: 0.5
 };
 
 let niffler = new Niffler(logging, params);

@@ -81,10 +81,9 @@ class ShipOrchestration {
     navigateShipToNode(ship, gameMap) {
         let selected = this.shipsInRoute.get(ship.id).node;
 
-        //TODO Parameterize for genetic algorithm
         if (
             gameMap.get(ship.position).haliteAmount <=
-            hlt.constants.MAX_HALITE / 10
+            hlt.constants.MAX_HALITE / this.config.params.halitecellmodifier
         ) {
             //move to the cell with the most halite in that node (greedy algorithm)
             const destination = this.getPositionWithMostHalite(selected);
@@ -133,10 +132,11 @@ class ShipOrchestration {
             this.cleanUpShips(ship, me);
         }
 
-        //TODO Convert to parameters for injection
         //build ships based on criteria
         if (
-            game.turnNumber < 0.5 * hlt.constants.MAX_TURNS &&
+            game.turnNumber <
+                this.config.params.modifierturnsships *
+                    hlt.constants.MAX_TURNS &&
             me.haliteAmount >= hlt.constants.SHIP_COST &&
             !gameMap.get(me.shipyard).isOccupied
         ) {

@@ -20,13 +20,13 @@ class Block {
     }
 
     getFitness() {
-        //TODO parameterize these fitness values as apart of the genetic algorithm
         //maximum value is the best
         return (
             (this.shipsInRouteToBlock < this.config.params.maxships
-                ? 50000
+                ? this.config.params.fitnessformaxships
                 : this.shipsInRouteToBlock) +
-            1 / this.distanceFromClosestDropoff +
+            this.config.params.fitnessfordistancetodropoff /
+                this.distanceFromClosestDropoff +
             this.totalHalite
         );
     }

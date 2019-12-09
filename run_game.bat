@@ -1,1 +1,1 @@
-halite.exe --replay-directory replays/ -vvv --width 32 --height 32 "node SimpleBot.js" "node NifflerBot.js --halitemax=5000 --maxships=1 --capacity=500 --recreate=100"
+halite.exe --replay-directory replays/ -vvv --width 32 --height 32 "node SimpleBot.js" "node NifflerBot.js --halitemax=5000 --maxships=1 --capacity=500 --recreate=100 --fitnessformaxships=5000 --fitnessfordistancetodropoff=1 --halitecellmodifier=10 --modifierturnsships=0.5"
